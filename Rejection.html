@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Message for Advait</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Palette: Rich, Warm, Earthy */
+            --bg-deep: #2D1B1B;     /* Dark Espresso */
+            --bg-warm: #5D4037;     /* Cocoa */
+            --bg-terra: #8D6E63;    /* Muted Terracotta */
+            --bg-light: #EFEBE9;    /* Paper/Cream */
+            
+            --orb-1: #4E342E;       /* Initial Orb Color */
+            --orb-2: #3E2723;
+            
+            --text-light: #F5F5F5;
+            --text-dark: #3E2723;
+            --accent: #FFCCBC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-light);
+            /* Ultra smooth transition */
+            transition: background-color 2.5s cubic-bezier(0.4, 0, 0.2, 1), color 2s ease;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* Subtle grain texture overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Floating Background Orbs for Depth */
+        .orb-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            transition: background-color 2.5s ease, transform 0.5s linear;
+            will-change: transform;
+        }
+
+        .orb-1 {
+            width: 60vh;
+            height: 60vh;
+            top: -10vh;
+            left: -10vw;
+            background-color: var(--orb-1);
+        }
+
+        .orb-2 {
+            width: 50vh;
+            height: 50vh;
+            bottom: -10vh;
+            right: -5vw;
+            background-color: var(--orb-2);
+            opacity: 0.4;
+        }
+
+        /* Typography */
+        h1, h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        h1 { font-size: 4rem; }
+        h2 { font-size: 2.8rem; }
+
+        p {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+            max-width: 620px;
+            font-weight: 300;
+            opacity: 0.9;
+            letter-spacing: 0.02em;
+        }
+
+        .highlight {
+            font-style: italic;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            color: var(--accent);
+            transition: color 2s ease;
+        }
+
+        /* Layout */
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.2s ease-out, transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Decorative Elements */
+        .line {
+            width: 1px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            margin: 2rem auto;
+            transition: background 1.5s ease;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            animation: bounce 2.5s infinite;
+            opacity: 0.6;
+            z-index: 100;
+            mix-blend-mode: difference;
+            color: #fff;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
+            40% {transform: translateX(-50%) translateY(-10px);}
+            60% {transform: translateX(-50%) translateY(-5px);}
+        }
+
+        /* Mobile Typography adjustments */
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            h2 { font-size: 2.2rem; }
+            .orb-1 { width: 40vh; height: 40vh; }
+            .orb-2 { width: 30vh; height: 30vh; }
+        }
+
+        /* Light Theme Modifiers */
+        body.light-theme {
+            color: var(--text-dark);
+        }
+        body.light-theme .line {
+            background: rgba(62, 39, 35, 0.2);
+        }
+        body.light-theme .highlight {
+            color: #D84315;
+            font-weight: 600;
+        }
+
+        /* --- MUSIC PLAYER STYLES --- */
+        .music-btn {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        body.light-theme .music-btn {
+            background: rgba(62, 39, 35, 0.1);
+            border-color: rgba(62, 39, 35, 0.2);
+            color: var(--text-dark);
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Audio Bars Animation */
+        .bar {
+            display: inline-block;
+            width: 3px;
+            height: 15px;
+            margin: 0 1px;
+            background-color: currentColor;
+            animation: none;
+        }
+
+        .music-btn.playing .bar {
+            animation: sound 1s infinite alternate;
+        }
+
+        .music-btn.playing .bar:nth-child(1) { animation-delay: 0.2s; height: 10px; }
+        .music-btn.playing .bar:nth-child(2) { animation-delay: 0.4s; height: 18px; }
+        .music-btn.playing .bar:nth-child(3) { animation-delay: 0.6s; height: 14px; }
+
+        @keyframes sound {
+            0% { height: 6px; }
+            100% { height: 20px; }
+        }
+
+        /* --- INTRO OVERLAY (New Additions) --- */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-deep);
+            z-index: 2000; /* sits on top of everything */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1.5s ease, visibility 1.5s;
+        }
+
+        #intro-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .intro-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeIn 2s ease forwards;
+        }
+        
+        .begin-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: var(--text-light);
+            padding: 12px 30px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            opacity: 0;
+            animation: fadeIn 2s ease 1s forwards; /* Delay the button slightly */
+        }
+
+        .begin-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 5px;
+        }
+
+        .headphones-hint {
+            font-size: 0.7rem; 
+            margin-top: 20px; 
+            opacity: 0; 
+            font-family: 'Montserrat', sans-serif; 
+            letter-spacing: 1px;
+            animation: fadeIn 2s ease 1.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- INTRO OVERLAY HTML -->
+    <div id="intro-overlay">
+        <div class="intro-text">For Advait</div>
+        <button class="begin-btn" id="start-btn">Read Letter</button>
+        <p class="headphones-hint">🎵 Sound on</p>
+    </div>
+
+    <div class="orb-container">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <!-- Music Player Controls -->
+    <!-- REPLACE 'song.mp3' with your actual file path or URL -->
+    <audio id="bg-music" loop>
+        <source src="song.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <button class="music-btn" id="music-toggle" title="Play Music">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </button>
+
+    <div class="scroll-indicator">Scroll Slowly</div>
+
+    <!-- Section 1: Intro -->
+    <section id="s1" data-color="#2D1B1B" data-orb1="#4E342E" data-orb2="#3E2723" data-theme="dark">
+        <div class="container">
+            <h1>Dear Advait</h1>
+            <div class="line"></div>
+            <p>I read your letter. Thank you for sending it.</p>
+        </div>
+    </section>
+
+    <!-- Section 2: Validation -->
+    <section id="s2" data-color="#4E342E" data-orb1="#5D4037" data-orb2="#3E2723" data-theme="dark">
+        <div class="container">
+            <h2>It means a lot.</h2>
+            <p>I know it wasn’t easy to write those words. It takes a lot of courage to be that vulnerable.</p>
+            <p>Hearing that I make you feel safe and understood is incredibly special to me. I helped you with your laptop because that’s what friends do—we look out for each other.</p>
+        </div>
+    </section>
+
+    <!-- Section 3: The Pivot (Warm Terracotta) -->
+    <section id="s3" data-color="#8D6E63" data-orb1="#A1887F" data-orb2="#6D4C41" data-theme="dark">
+        <div class="container">
+            <h2>But I need to be honest.</h2>
+            <div class="line"></div>
+            <p>You wrote that somewhere along the way, I stopped feeling like "just a friend" to you.</p>
+            <p>I need to tell you that for me... <br><span class="highlight">friendship is exactly what this is.</span></p>
+        </div>
+    </section>
+
+    <!-- Section 4: The Clarity (Softer tone) -->
+    <section id="s4" data-color="#D7CCC8" data-orb1="#EFEBE9" data-orb2="#BCAAA4" data-theme="light">
+        <div class="container">
+            <h2>My feelings are different.</h2>
+            <p>I don't have romantic feelings for you, Advait. I see us strictly as friends, and I don't see that changing.</p>
+            <p>I value you deeply, but purely in a platonic way.</p>
+        </div>
+    </section>
+
+    <!-- Section 5: The Friendship (Lightest/Clear background) -->
+    <section id="s5" data-color="#EFEBE9" data-orb1="#FFFFFF" data-orb2="#D7CCC8" data-theme="light">
+        <div class="container">
+            <h2>I don't want to lose you.</h2>
+            <p>The trust, the jokes, the way we help each other—that is all very real to me, and I don't want to lose it.</p>
+            <p>I hope you can understand my feelings, just as I respect yours. I’d really love for us to keep being the good friends we are.</p>
+            <div class="line"></div>
+            <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-top: 2rem;">— Purvaj</p>
+        </div>
+    </section>
+
+    <script>
+        // --- 1. MUSIC PLAYER LOGIC ---
+        const music = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-toggle');
+        
+        // --- INTRO OVERLAY LOGIC (New) ---
+        const overlay = document.getElementById('intro-overlay');
+        const startBtn = document.getElementById('start-btn');
+
+        startBtn.addEventListener('click', () => {
+            // Fade out the overlay
+            overlay.classList.add('hidden');
+            
+            // Start the music automatically
+            music.play().then(() => {
+                musicBtn.classList.add('playing');
+            }).catch(error => {
+                console.log("Audio autoplay prevented:", error);
+            });
+        });
+
+        musicBtn.addEventListener('click', () => {
+            if (music.paused) {
+                music.play();
+                musicBtn.classList.add('playing');
+            } else {
+                music.pause();
+                musicBtn.classList.remove('playing');
+            }
+        });
+
+        // --- 2. SMOOTH COLOR TRANSITIONS ---
+        const sections = document.querySelectorAll('section');
+        const body = document.body;
+        const orb1 = document.querySelector('.orb-1');
+        const orb2 = document.querySelector('.orb-2');
+
+        const observerOptions = {
+            root: null,
+            threshold: 0.55 // Trigger when 55% of the section is visible
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+
+                    // Extract colors
+                    const newBg = entry.target.getAttribute('data-color');
+                    const newOrb1 = entry.target.getAttribute('data-orb1');
+                    const newOrb2 = entry.target.getAttribute('data-orb2');
+                    const theme = entry.target.getAttribute('data-theme');
+
+                    // Apply colors
+                    body.style.backgroundColor = newBg;
+                    orb1.style.backgroundColor = newOrb1;
+                    orb2.style.backgroundColor = newOrb2;
+
+                    // Apply Theme
+                    if (theme === 'light') {
+                        body.classList.add('light-theme');
+                    } else {
+                        body.classList.remove('light-theme');
+                    }
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // --- 3. PARALLAX ORB MOVEMENT ---
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            
+            // Move orbs slowly based on scroll position
+            // Orb 1 moves down slowly
+            orb1.style.transform = `translateY(${scrolled * 0.2}px) translateX(${scrolled * 0.05}px)`;
+            
+            // Orb 2 moves up slowly
+            orb2.style.transform = `translateY(${scrolled * -0.15}px) translateX(${scrolled * -0.05}px)`;
+        });
+
+    </script>
+</body>
+</html>
